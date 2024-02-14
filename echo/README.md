@@ -15,5 +15,5 @@ run ```send``` with the USB device connected to the Pi:
 ```
 sudo ./send /dev/ttyUSB0 
 ```
-At this point, any character you type into the terminal will be sent to the Pi, sent back to the terminal, and displayed on the screen.  Typing 'q' will quit and
+At this point, any character you type into the terminal will be sent to the Pi, sent back to the terminal, and displayed on the screen.  Typing ```'q'``` will quit and
 the LED on the Pi will turn off.
