@@ -1,0 +1,6 @@
+# The loader runs from address 0x6000, the binaries it loads
+# are typically copied into 0x8000
+# uart_2ndstage=1
+# enable_uart=1
+kernel=kernel7.img
+kernel_address=0x6000

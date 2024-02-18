@@ -20,7 +20,7 @@ echo: $(OBJS) $(HDRS)
 	$(ARM_OBJDUMP) -d -S $(IMG_NAME).elf > $(IMG_NAME).asm
 
 send: send.c
-	$(CC) -std=c99 -Werror -std=c99 -Wall -Wextra -O2 -o send send.c
+	$(CC) -std=c99 -Werror -Wall -Wextra -O2 -o send send.c
 
 %.o: %.c
 	$(ARM_CC) $(CFLAGS) $(INCS) -c $< -o $@ 
