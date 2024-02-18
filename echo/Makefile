@@ -1,7 +1,7 @@
 ARM_CC = $(ARM_TOOLCHAIN)-gcc
 ARM_OBJDUMP = $(ARM_TOOLCHAIN)-objdump
 ARM_OBJCOPY = $(ARM_TOOLCHAIN)-objcopy
-CFLAGS =  -mcpu=arm1176jzf-s -fpic -ffreestanding -g -Wall -Wextra -Wno-unused-value -mgeneral-regs-only
+CFLAGS =  -mcpu=arm1176jzf-s -ffreestanding -g -Wall -Wextra -Wno-unused-value -mgeneral-regs-only
 LDFLAGS = -nostdlib -nostartfiles -lgcc
 SRCS = $(filter-out send.c,$(wildcard *.c))
 ASM_SRCS = $(wildcard *.S)
