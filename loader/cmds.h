@@ -12,15 +12,14 @@
 #define MAX_CMDLINE   16
 #define MAX_ARGS      4
 #endif
-#define MAX_ERRMSG    128
 
 // Commands
-#define CMD_INIT   0
-#define CMD_START  1
-#define CMD_RUN    2
-#define CMD_RECORD 3
-#define CMD_DONE   4
-#define CMD_ERROR  5
+#define CMD_INIT     0
+#define CMD_START    1
+#define CMD_RUN      2
+#define CMD_RECORD   3
+#define CMD_DONE     4
+#define CMD_ERROR    5
 
 // Record types
 #define REC_DATA    0x00

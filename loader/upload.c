@@ -13,6 +13,7 @@
 #include <inttypes.h>
 #include <bsd/string.h>
 #include <limits.h>
+#include "error.h"
 #include "cmds.h"
 #include "cmdline.h"
 
