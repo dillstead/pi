@@ -11,10 +11,26 @@
 
 struct test
 {
-    int argc;
-    char **argv;
-    int expected;
+    int expected_argc;
+    char **expected_argv;
+    bool expected;
 };
+
+static bool cmd_args(int argc1, char **argv1, int argc2, char **argv2)
+{
+    if (argc1 != argc2)
+    {
+        return false;
+    }
+    for (int i = 0; i < argc1; i++)
+    {
+        if (!strcmp(argv1[i], argv2[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 static bool run_test(struct test *test)
 {
@@ -26,6 +42,8 @@ static bool run_test(struct test *test)
     char cmdline[MAX_CMDLINE];
     uint8_t record[MAX_RECORD];
     struct parser parser = { 0 };
+    int actual_argc;
+    char **actual_argv;
 
     flat_used = 0;
     flat_remain = flatten_cmdline(tests->argv, tests->argc, flat, sizeof flat);
@@ -36,45 +54,42 @@ static bool run_test(struct test *test)
     
     while (flat_remain > 0)
     {
-        len = cmdline_encode(flat_cmdline + flat_cmdline_used, flat_cmdline_remain,
-                             record);
-        cmdline_used += len;
-        cmdline_remain -= len;
+        len = cmdline_encode(flat_cmdline + flat_used, flat_remain, record);
+        flat_used += len;
+        flat_remain -= len;
             
         parser_set_record(&parser, record, len);
         res = parser_parse(&parser);
         if (res < 0 || parser.type != REC_CMDLINE)
         {
-            // error
+            return false;
         }
             
-
         if (cmdline_off + parser.byte_count > sizeof cmdline)
         {
-            res = ERR_CMD_TOO_LONG;
-            break;
+            return false;
         }
         memcpy(cmdline + cmdline_off, parser.record, parser.byte_count);
         cmdline_off += parser.byte_count;
     }
 
-    setup_args(cmdline, cmdline_off, &argc, argv);
-    // compare 
-    
-    return 0;
+    setup_args(cmdline, cmdline_off, &actual_argc, actual_argv);
+    return cmp_args(actual_argc, actual_argv, test->argc, test->argv);
 }
 
-// too many args
-// cmd line too long
-// zero args
-// single record
-// split across multiple records
-int main(int argc, char **argv)
+int main(void)
 {
     struct test tests[] =
-        {
-            { 3, { "cmdline_test", "test1" }, 0 }
-        };
+    {
+        // Too many args
+        { 5, { "a", "b", "c", "d", "e" }, false },
+        // Too long
+        { 2, { "abcdefghi", "jklmnopqrstuvwxyz" }, false },
+        // Single record
+        { 2, { "a", "b" },  true },
+        // Multiple records
+        { 2, { "abcd", "efcg" },  true },
+    };
     
     for (size_t i = 0; i < sizeof tests / sizeof tests[0]; i++)
     {
