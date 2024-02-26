@@ -21,7 +21,9 @@ int read_char(struct parser *parser, uint8_t *value);
 int read_byte(struct parser *parser, uint8_t *value);
 int read_ushort(struct parser *parser, uint16_t *value);
 int read_uint(struct parser *parser, uint32_t *value);
+#ifdef TEST
 void parser_set_record(struct parser *parser, uint8_t *record, size_t len);
+#endif
 int parser_parse(struct parser *parser);
 
 #endif

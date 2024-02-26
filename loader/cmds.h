@@ -2,15 +2,16 @@
 #define CMDS_H
 
 #ifndef TEST
-#define MAX_RECORD    560
+//#define MAX_RECORD    560
+#define MAX_RECORD    522
 #define MAX_DATA      255
 #define MAX_CMDLINE   1024
 #define MAX_ARGS      512
 #else
-#define MAX_RECORD    20
-#define MAX_DATA      4
-#define MAX_CMDLINE   16
-#define MAX_ARGS      4
+#define MAX_RECORD    30
+#define MAX_DATA      5
+#define MAX_CMDLINE   10
+#define MAX_ARGS      2
 #endif
 
 // Commands

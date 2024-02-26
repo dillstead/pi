@@ -243,7 +243,7 @@ int main(int argc, char **argv)
             if (cmdline_remain > 0)
             {
                 len = cmdline_encode(cmdline + cmdline_used, cmdline_remain,
-                                     record);
+                                     record, NULL);
                 cmdline_used += len;
                 cmdline_remain -= len;
             }

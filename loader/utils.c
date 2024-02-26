@@ -46,6 +46,7 @@ void setup_args(char *cmdline, size_t cmdline_len, int *argc, char **argv)
 {
     char prev = '\0';
 
+    *argc = 0;
     for (size_t i = 0; i < cmdline_len; i++)
     {
         if (cmdline[i] != '\0' && prev == '\0')

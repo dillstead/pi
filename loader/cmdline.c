@@ -36,10 +36,11 @@ ssize_t flatten_cmdline(char **argv, int argc, char *cmdline, size_t cmdline_sz)
     return cmdline_used;
 }
 
-size_t cmdline_encode(char *cmdline, size_t cmdline_remain, uint8_t *record)
+size_t cmdline_encode(char *cmdline, size_t cmdline_remain, uint8_t *record, size_t *rlen)
 {
     uint8_t checksum = 0;
     size_t len = cmdline_remain < MAX_DATA ? cmdline_remain : MAX_DATA;
+    uint8_t *start = record;
 
     // Each encoded record is:
     // : start_code byte_count address record_type data checksum crlf
@@ -71,5 +72,9 @@ size_t cmdline_encode(char *cmdline, size_t cmdline_remain, uint8_t *record)
     //crlf
     *record++ = '\r';
     *record++ = '\n';
+    if (rlen != NULL)
+    {
+        *rlen = (size_t) (record - start);
+    }
     return len;
 }
