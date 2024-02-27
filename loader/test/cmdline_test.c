@@ -89,12 +89,10 @@ int main(void)
         // Too long
         { 1, { "abcdefghij" }, false },
         { 2, { "ab", "cdefghi" }, false },
-        // Single record
+        { 1, { "a" }, true},
+        { 2, { "a", "b" }, true},
         { 1, { "abcdefghi" }, true},
-        //{ 2, { "a", "b" },  true },
-        // Multiple records
-        //{ 1, { "abcdefg" },  true },
-        //{ 2, { "abcde", "fg" },  true },
+        { 2, { "abcdef", "gh" },  true },
     };
     
     for (size_t i = 0; i < sizeof tests / sizeof tests[0]; i++)

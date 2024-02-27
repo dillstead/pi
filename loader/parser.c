@@ -84,13 +84,11 @@ int read_uint(struct parser *parser, uint32_t *value)
     return SUCCESS;
 }
 
-#ifdef TEST
 void parser_set_record(struct parser *parser, uint8_t *record, size_t len)
 {
     memcpy(parser->record, record, len); 
     parser->record_len = len;
 }
-#endif
 
 int parser_parse(struct parser *parser)
 {
