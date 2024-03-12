@@ -96,7 +96,7 @@ int main(int argc, char **argv)
     if (argc != 2)
     {
         fprintf(stderr, "Usage: send <dev>\n");
-        goto cleanup;
+        return EXIT_FAILURE;
     }
 
     serial_fd = serial_open(argv[1]);

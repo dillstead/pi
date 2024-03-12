@@ -10,6 +10,7 @@
 #define ERR_INVAL_TYPE   -5
 #define ERR_INVAL_COUNT  -6
 #define ERR_INVAL_CKSUM  -7
+#define ERR_ADDR_OVERLAP -8
 
 static const char err_msgs[][MAX_ERRMSG] =
 {
@@ -20,7 +21,8 @@ static const char err_msgs[][MAX_ERRMSG] =
     "invalid character",
     "invalid record type",
     "invalid byte count",
-    "invalid checksum"
+    "invalid checksum",
+    "address overlap"
 };
 
 #endif

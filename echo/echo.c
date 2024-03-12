@@ -4,10 +4,11 @@
 #include "uart.h"
 #include "led.h"
 
-void echo_main(uint32_t r0, uint32_t r1, void *atags)
+// When loaded via the loader, argc and argv (if set during load) will be available. 
+void echo_main(int argc, char **argv, void *atags)
 {
-    (void) r0;
-    (void) r1;
+    (void) argc;
+    (void) argv;
     (void) atags;
     uint8_t c;
 

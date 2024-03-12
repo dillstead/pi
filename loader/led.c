@@ -12,7 +12,7 @@ void led_init(void)
     mmio_write(GPFSEL1, selector);
 }
 
-// ~10000000 for interval
+
 void led_blink(int times, int32_t interval)
 {
     for (int i = 0; i < times; i++)

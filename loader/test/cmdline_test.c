@@ -89,6 +89,8 @@ int main(void)
         // Too long
         { 1, { "abcdefghij" }, false },
         { 2, { "ab", "cdefghi" }, false },
+        // No args
+        { 0, { 0 }, true },
         { 1, { "a" }, true},
         { 2, { "a", "b" }, true},
         { 1, { "abcdefghi" }, true},
@@ -99,7 +101,7 @@ int main(void)
     {
         if (run_test(&tests[i]) != tests[i].expected)
         {
-            printf("Test %zu failed\n", i);
+            printf("Test %zu failed\n", i + 1);
         }
     }
     return EXIT_SUCCESS;

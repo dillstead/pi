@@ -6,7 +6,7 @@
 #define MAX_RECORD    522
 #define MAX_DATA      255
 #define MAX_CMDLINE   1024
-#define MAX_ARGS      512
+#define MAX_ARGS      128
 #else
 #define MAX_RECORD    30
 #define MAX_DATA      5

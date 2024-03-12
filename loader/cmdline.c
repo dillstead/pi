@@ -72,6 +72,7 @@ size_t cmdline_encode(char *cmdline, size_t cmdline_remain, uint8_t *record, siz
     //crlf
     *record++ = '\r';
     *record++ = '\n';
+    *record = '\0';
     if (rlen != NULL)
     {
         *rlen = (size_t) (record - start);

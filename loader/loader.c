@@ -6,10 +6,12 @@
 #include "cmds.h"
 #include "utils.h"
 #include "parser.h"
+                       
+#define READY_BLINK    10485760
+
+extern uint32_t __end;
 
 static char cmdline[MAX_CMDLINE];
-static int argc;
-static char *argv[MAX_ARGS];
 
 static void write_byte(uint8_t val)
 {
@@ -53,9 +55,11 @@ static int read_record(uint8_t *record, size_t sz, size_t *len)
 }
 
 void loader_main(uint32_t r0, uint32_t r1, void *atags)
-{
+{    
     (void) r0;
     (void) r1;
+    int argc;
+    char *argv[MAX_ARGS];
     struct parser parser;
     uint8_t record[MAX_RECORD];
     size_t cmdline_off = 0;
@@ -65,7 +69,7 @@ void loader_main(uint32_t r0, uint32_t r1, void *atags)
     uart_init();
     led_init();
     memset(&parser, 0, sizeof parser);
-    led_blink(1, 1000000);
+    led_blink(1, READY_BLINK);
     // Wait for CMD_INIT before sending commands.
     uart_read_byte();
     write_byte(CMD_START);
@@ -80,16 +84,20 @@ void loader_main(uint32_t r0, uint32_t r1, void *atags)
             break;
         }
         parser_set_record(&parser, record, len);
-        led_blink(1, 1000000);
-        
         res = parser_parse(&parser);
         if (res < 0 || parser.type == REC_END)
         {
             break;
         }
-        led_blink(1, 1000000);
-        
-        if (parser.type == REC_DATA)
+        if (parser.type == REC_SSEG || parser.type == REC_SADDR)
+        {
+            if (&__end >= (uint32_t *) parser.start_addr)
+            {
+                res = ERR_ADDR_OVERLAP;
+                break;
+            }
+        }
+        else if (parser.type == REC_DATA)
         {
             // Copy data to the appropriate location in physical memory.
             memcpy((void *) parser.base_addr + parser.offset, parser.record,
