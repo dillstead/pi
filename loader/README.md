@@ -37,7 +37,7 @@ To blink the LED 15 times with delay of 100000 units:
 ```
 sudo ./upload /dev/ttyUSB0 ./blink.hex blink 10 100000
 ```
-It's important to note that the format of the command line argument follows that of C's ```argv``` with the 1st argument being the name of the executable.  In this case, ```blink``.
+It's important to note that the format of the command line argument follows that of C's ```argv``` with the 1st argument being the name of the executable.  In this case, ```blink```.
 
 Also note that the loader only supports the [Intel HEX format](https://en.wikipedia.org/wiki/Intel_HEX) for images..
 
