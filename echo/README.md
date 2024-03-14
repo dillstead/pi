@@ -7,11 +7,11 @@ make
 cp kernel7.img /media/<your SD Card>/
 ```
 
-In order to sent keystrokes to the Pi, you'll need a USB to Serial TTL cable to connect your desktop/laptop to the Pi.  You can find the part and instructions 
+In order to send keystrokes to the Pi, you'll need a USB to Serial TTL cable to connect your desktop/laptop to the Pi.  You can find the part and instructions 
 for setting it up [here](https://www.adafruit.com/product/954).
 
 Once that's setup and working, insert the card into the Pi, and power it up.  The green LED should turn on when it's ready to receive serial input.  Next, 
-run ```send``` with the USB device connected to the Pi:
+run ```send``` with the USB cable connected to the Pi:
 ```
 sudo ./send /dev/ttyUSB0 
 ```
