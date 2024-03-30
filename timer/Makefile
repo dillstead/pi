@@ -26,4 +26,4 @@ timer: $(OBJS) $(HDRS)
 	$(ARM_CC) $(CFLAGS) $(INCS) -c $< -o $@
 
 clean:
-	rm *.img *.elf *.asm *.hex *.o send
+	rm *.img *.elf *.asm *.hex *.o

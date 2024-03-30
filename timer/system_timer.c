@@ -1,6 +1,7 @@
 #include "interrupts.h"
 #include "mmio.h"
 #include "system_timer.h"
+#include "led.h"
 
 // According to https://embedded-xinu.readthedocs.io/en/latest/arm/rpi/BCM2835-System-Timer.html
 // the system timer can only use the system timer compare register 1 or 3 which correspond to
@@ -16,9 +17,14 @@
 #define SYS_TIMER_COMP2 (SYS_TIMER_BASE + 0x0014)
 #define SYS_TIMER_COMP3 (SYS_TIMER_BASE + 0x0018)
 
+extern volatile uint32_t led_delay;
+static volatile bool led_state;
+
 static void process_interrupt(void)
 {
-    printf("tick\n");
+    led_state = !led_state;
+    led_state ? led_on() : led_off();
+    system_timer_set(led_delay);
 }
 
 static void clear_interrupt(void)
@@ -40,7 +46,7 @@ void system_timer_set(uint32_t usecs)
     mmio_write(SYS_TIMER_COMP1, lo + usecs);
 }
 
-void system_timer_init(void)
+void system_timer_init()
 {
     register_process_interrupt(INT_SYS_TIMER, process_interrupt);
     register_clear_interrupt(INT_SYS_TIMER, clear_interrupt);

@@ -20,8 +20,6 @@ void register_process_interrupt(int interrupt_num, void (*process_interrupt)(voi
 {
     uint32_t enable;
     
-    ASSERT(!process_interrupts[interrupt_num]);
-    
     process_interrupts[interrupt_num] = process_interrupt;
     // Enable the particular interrupt.
     if (interrupt_num < INT_IRQ2_BASE)
@@ -46,30 +44,34 @@ void register_process_interrupt(int interrupt_num, void (*process_interrupt)(voi
 
 void register_clear_interrupt(int interrupt_num, void (*clear_interrupt)(void))
 {
-    ASSERT(!clear_interrupts[interrupt_num]);
-    
     clear_interrupts[interrupt_num] = clear_interrupt;
 }
 
-void interrupt_handler(void)
+void handle_interrupt(void)
 {
+    int num;
+    
     // At this point, interrupts are disabled.
     num = get_interrupt_num();
     if (num >= MAX_INTERRUPTS)
     {
         return;
     }
+    
     // Clear the source of the interrupt or else it will fire again
     // as soon as interrupts are enabled.
     if (clear_interrupts[num])
     {
         clear_interrupts[num]();
     }
+    
     // Enable interrupts during the processing of the handler.
-    //enable_interrupts();
+    interrupts_enable();
     if (process_interrupts[num])
     {
         process_interrupts[num]();
     }
-    //disable_interrupts();
+    
+    // Disable interrupts so interrupt handler can exit without being interrupted.
+    interrupts_disable();
 }
