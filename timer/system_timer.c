@@ -1,4 +1,5 @@
 #include "interrupts.h"
+#include "dmb.h"
 #include "mmio.h"
 #include "system_timer.h"
 #include "led.h"
@@ -31,19 +32,27 @@ static void clear_interrupt(void)
 {
     uint32_t control;
 
+    dmb();
+    
     control = mmio_read(SYS_TIMER_CTRL);
     // Clear the match status bit for compare register 1 to clear
     // the interrupt request line.
     control |= 2;
     mmio_write(SYS_TIMER_CTRL, control);
+    
+    dmb();
 }
 
 void system_timer_set(uint32_t usecs)
 {
     uint32_t lo;
+
+    dmb();
     
     lo = mmio_read(SYS_TIMER_LO);
     mmio_write(SYS_TIMER_COMP1, lo + usecs);
+
+    dmb();
 }
 
 void system_timer_init()
