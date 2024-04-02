@@ -1,5 +1,5 @@
-#ifndef __DMB_H
-#define __DMB_H
+#ifndef DMB_H
+#define DMB_H
 
 // BCM2835 ARM Peripherals 1.3 indicates that a data memory barrier must
 // be used before the first write and last read of a peripheral to ensure

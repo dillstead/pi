@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "mmio.h"
 #include "interrupts.h"
+#include "debug_log.h"
 
 extern int get_interrupt_num(void);
 
@@ -50,7 +51,8 @@ void register_clear_interrupt(int interrupt_num, void (*clear_interrupt)(void))
 void handle_interrupt(void)
 {
     int num;
-    
+
+    log_str("handle_interrupt");
     // At this point, interrupts are disabled.
     num = get_interrupt_num();
     if (num >= MAX_INTERRUPTS)

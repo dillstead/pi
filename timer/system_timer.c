@@ -18,14 +18,26 @@
 #define SYS_TIMER_COMP2 (SYS_TIMER_BASE + 0x0014)
 #define SYS_TIMER_COMP3 (SYS_TIMER_BASE + 0x0018)
 
-extern volatile uint32_t led_delay;
-static volatile bool led_state;
+static uint32_t _tick;
+static void (*_cb)(void *);
+static void *_data;
+
+static void set(void)
+{
+    uint32_t lo;
+    
+    dmb();
+
+    lo = mmio_read(SYS_TIMER_LO);
+    mmio_write(SYS_TIMER_COMP1, lo + _tick);
+
+    dmb();
+}
 
 static void process_interrupt(void)
 {
-    led_state = !led_state;
-    led_state ? led_on() : led_off();
-    system_timer_set(led_delay);
+    _cb(_data);
+    set();
 }
 
 static void clear_interrupt(void)
@@ -43,20 +55,16 @@ static void clear_interrupt(void)
     dmb();
 }
 
-void system_timer_set(uint32_t usecs)
-{
-    uint32_t lo;
-
-    dmb();
-    
-    lo = mmio_read(SYS_TIMER_LO);
-    mmio_write(SYS_TIMER_COMP1, lo + usecs);
-
-    dmb();
-}
-
 void system_timer_init()
 {
     register_process_interrupt(INT_SYS_TIMER, process_interrupt);
     register_clear_interrupt(INT_SYS_TIMER, clear_interrupt);
+}
+
+void system_timer_tick(uint32_t tick, void (*cb)(void *data), void *data)
+{
+    _tick = tick;
+    _cb = cb;
+    _data = data;
+    set();
 }

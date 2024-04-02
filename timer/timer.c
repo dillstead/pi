@@ -3,51 +3,35 @@
 #include <stdbool.h>
 #include "interrupts.h"
 #include "system_timer.h"
+#include "uart.h"
 #include "led.h"
+#include "utils.h"
 
-static uint32_t str_to_uint(char *num)
+static void cb(void *data)
 {
-    int res = 0;
-    int power = 0;
-    int digit;
-    char *start = num;
-
-    while (*num >= '0' && *num <= '9')
-    {
-        num++;     
-    }
-    num--;
-
-    while (num != start)
-    {
-        digit = *num - '0'; 
-        for (int i = 0; i < power; i++)
-        {
-            digit *= 10;
-        }
-        res += digit;
-        power++;
-        num--;
-    }
-
-    return res;
-}
+    bool led_state = *((bool *) data);
     
-volatile uint32_t led_delay;
+    led_state = !led_state;
+    led_state ? led_on() : led_off();
+}
 
 // When loaded via the loader, argc and argv (if set during load) will be available. 
 void timer_main(int argc, char **argv, void *atags)
 {
     (void) atags;
+    volatile uint32_t tick;
+    bool led_state = false;
 
     if (argc > 1)
     {
-        led_delay = str_to_uint(argv[1]);
+        tick = atoi(argv[1]);
     }
 
-    led_init();
     interrupts_init();
+    led_init();
+    uart_init();
     system_timer_init();
-    system_timer_set(led_delay);
     interrupts_enable();
+
+    system_timer_tick(tick, cb, &led_state);
 }

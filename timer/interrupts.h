@@ -1,5 +1,5 @@
-#ifndef __INTERRUPT_H
-#define __INTERRUPT_H
+#ifndef INTERRUPT_H
+#define INTERRUPT_H
 
 #ifndef __ASSEMBLER__
 

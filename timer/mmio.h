@@ -1,5 +1,5 @@
-#ifndef __MMIO_H
-#define __MMIO_H
+#ifndef MMIO_H
+#define MMIO_H
 
 #include <stdint.h>
 
