@@ -2,6 +2,7 @@
 #include "aux.h"
 #include "gpio.h"
 #include "uart.h"
+#include "dmb.h"
 #include "mmio.h"
 
 void uart_init(void)
@@ -50,16 +51,26 @@ void uart_init(void)
 uint8_t uart_read_byte(void)
 {
     uint32_t byte;
+
+    dmb();
     
     // Wait for UART to become ready to receive.
     while (!(mmio_read(AUX_MU_LSR_REG) & 0x01));
     byte = mmio_read(AUX_MU_IO_REG);
+
+    dmb();
+    
     return (uint8_t) (byte & 0xFF);
 }
 
 void uart_write_byte(uint8_t val)
 {
+    dmb();
+    
     // Wait for UART to become ready to transmit.
     while (!(mmio_read(AUX_MU_LSR_REG) & 0x20));
     mmio_write(AUX_MU_IO_REG, val);
+
+    dmb();
+    
 }

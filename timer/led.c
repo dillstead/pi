@@ -1,5 +1,6 @@
 #include "gpio.h"
 #include "mmio.h"
+#include "dmb.h"
 #include "led.h"
 
 void led_init(void)
@@ -12,24 +13,20 @@ void led_init(void)
     mmio_write(GPFSEL1, selector);
 }
 
-// ~10000000 for interval
-void led_blink(int times, int32_t interval)
-{
-    for (int i = 0; i < times; i++)
-    {
-        led_on();
-        delay(interval);
-        led_off();
-        delay(interval);
-    }
-}
-
 void led_on(void)
 {
+    dmb();
+    
     mmio_write(GPCLR0, 1 << 16);
+
+    dmb();
 }
 
 void led_off(void)
 {
+    dmb();
+    
     mmio_write(GPSET0, 1 << 16);
+
+    dmb();
 }
