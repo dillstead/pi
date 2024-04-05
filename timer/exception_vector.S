@@ -19,5 +19,3 @@ prefetch_abort_handler_addr:            .word prefetch_abort_handler
 data_abort_handler_addr:                .word data_abort_handler
 interrupt_handler_addr:                 .word interrupt_handler
 fast_interrupt_handler_addr:            .word fast_interrupt_handler
-        
-

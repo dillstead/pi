@@ -19,7 +19,7 @@ static void cb(void *data)
 void timer_main(int argc, char **argv, void *atags)
 {
     (void) atags;
-    volatile uint32_t tick;
+    uint32_t tick;
     bool led_state = false;
 
     if (argc > 1)
@@ -30,8 +30,6 @@ void timer_main(int argc, char **argv, void *atags)
     interrupts_init();
     led_init();
     uart_init();
-    system_timer_init();
+    system_timer_init(tick, cb, &led_state);
     interrupts_enable();
-
-    system_timer_tick(tick, cb, &led_state);
 }

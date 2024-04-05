@@ -79,10 +79,8 @@ interrupt_handler:
         // Ensure stack is double word aligned before calling a function.
         and     r1, sp, #4
         sub     sp, sp, r1
-        
         push    { r1, lr }
         bl      handle_interrupt
-
         // Interrupts will be left disabled by irq_handler.
         // Restore SVC registers and stack.
         pop     { r1, lr }

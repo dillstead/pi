@@ -55,14 +55,10 @@ static void clear_interrupt(void)
     dmb();
 }
 
-void system_timer_init()
+void system_timer_init(uint32_t tick, void (*cb)(void *data), void *data)
 {
     register_process_interrupt(INT_SYS_TIMER, process_interrupt);
     register_clear_interrupt(INT_SYS_TIMER, clear_interrupt);
-}
-
-void system_timer_tick(uint32_t tick, void (*cb)(void *data), void *data)
-{
     _tick = tick;
     _cb = cb;
     _data = data;
